@@ -1,0 +1,76 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+header{
+  position: fixed;
+    background-color: #393535;
+    top: -1.5rem;
+    right: 0;
+    left: 0;
+}
+
+.app-title{
+    margin-bottom: 0;
+    text-shadow: 2px 4px black;
+}
+
+.questions{
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.add-button{
+  position: sticky;
+  top: 90%;
+  left: 95%;
+  margin-right: -65%;
+  background-color: white;
+  color: black;
+}
+
+.blur{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    height: 200%;
+    backdrop-filter: blur(5px);
+}
+
+.add-form{
+    display: none;
+    padding: 1rem;
+    position: sticky;
+    bottom: 20%;
+    left: 36%;
+    width: 20rem;
+    padding: 2rem;
+    z-index: 1;
+    border-radius: 1rem;
+    color: white;
+    background-color: rgb(83, 145, 83);
+}
+
+.confirm-alert{
+    display: flex;
+    gap: 1rem;
+    justify-self: center;
+}
+
+.label-input{
+    display: grid;
+    gap: .4rem;
+    margin-bottom: 1rem;
+}
+
+.label-input input{
+  padding: .5rem;
+}
