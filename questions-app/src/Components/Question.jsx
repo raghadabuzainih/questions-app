@@ -4,20 +4,22 @@ import { Button } from './Button'
 
 export const Question = (props) => {
     let [selectedIndex, setSelectedIndex] = React.useState(-1) 
-    //in line 18 i used option.slice(0,1) because options stored like (A-...), (B-...)
-    //and i want to take the first character & compare it with the correct answer
     let options = props.options.map((option, index) => {
         return <Button 
                     key={`${props.questionIndex}-${index}`}
                     class={`follow-q${props.questionIndex}`} 
                     value={option.slice(3)}
                     isResultActive={props.isResultActive}
-                    isTrueAnswer={option == props.answer}
                     //if is result button active(clicked) --> false & true answers will colored(red & green)
                     //else --> when the result is not shown -> only selected answer will color blue
+                    
+                    //i used option.slice(0,1) because options stored like (A-...), (B-...)
+                    //and i want to take the first character & compare it with the correct answer
                     style={{backgroundColor: props.isResultActive ? 
                         (option.slice(0,1) == props.answer ? 'rgb(25, 110, 25)' : 'rgb(236, 87, 87)') : 
-                        index == selectedIndex ? '#263581' : '#1a1a1a'}}
+                        index == selectedIndex ? '#263581' : '#1a1a1a',
+                        cursor:props.isResultActive ? 'not-allowed' : 'pointer'
+                    }}
                     clickAnswer={() => handleClick(index, option)}
                 >
                     {option}

@@ -2,16 +2,22 @@ import React from "react"
 
 export const Button = (props) => {
     const buttonRef = React.useRef(null)
-    
+
+    let values = ['+', 'Click To See The Result', 'Add New Question', 'Cancel']
+    //another values -> values of options(answers)
+
     return(
         <button
             ref={buttonRef} 
             className={props.class}
             style={props.style}
-            onClick={props.value == '+' ? props.onAdd : 
-                    props.value == 'Click To See The Result' ? props.onShowResult :
-                    props.value == 'Add New Question' ? props.onSubmitNew : 
-                    props.value == 'Cancel' ? props.onCancel : props.clickAnswer}
+            disabled={!values.includes(props.value) ? 
+                        (props.isResultActive ? true : false) : false
+                     }
+            onClick={props.value == values[0] ? props.onAdd : 
+                    props.value == values[1] ? props.onShowResult :
+                    props.value == values[2] ? props.onSubmitNew : 
+                    props.value == values[3] ? props.onCancel : props.clickAnswer}
         >
             {props.value}
         </button>
