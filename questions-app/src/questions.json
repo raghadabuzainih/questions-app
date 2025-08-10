@@ -2,31 +2,31 @@
   {
     "question": "What does HTML stand for?",
     "options": [
-      "Hyper Trainer Marking Language",
-      "Hyper Text Markup Language",
-      "Hyper Text Marketing Language",
-      "Hyper Text Markup Leveler"
+      "A- Hyper Trainer Marking Language",
+      "B- Hyper Text Markup Language",
+      "C- Hyper Text Marketing Language",
+      "D- Hyper Text Markup Leveler"
     ],
-    "answer": "Hyper Text Markup Language"
+    "answer": "B"
   },
   {
     "question": "Which language is primarily used for styling web pages?",
     "options": [
-      "HTML",
-      "Python",
-      "CSS",
-      "JavaScript"
+      "A- HTML",
+      "B- Python",
+      "C- CSS",
+      "D- JavaScript"
     ],
-    "answer": "CSS"
+    "answer": "C"
   },
   {
     "question": "Which programming language runs in a web browser?",
     "options": [
-      "Python",
-      "JavaScript",
-      "C++",
-      "Java"
+      "A- Python",
+      "B- JavaScript",
+      "C- C++",
+      "D- Java"
     ],
-    "answer": "JavaScript"
+    "answer": "B"
   }
 ]

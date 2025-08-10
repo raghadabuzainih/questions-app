@@ -74,3 +74,11 @@ header{
 .label-input input{
   padding: .5rem;
 }
+
+.option{
+  display: flex;
+}
+
+.option input{
+  width: 100%;
+}

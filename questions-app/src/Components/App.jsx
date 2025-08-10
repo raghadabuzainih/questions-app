@@ -3,28 +3,27 @@ import {Question} from './Question'
 import questions from '../questions.json'
 import React from 'react'
 import Confetti from "react-confetti"
+import {Input} from './Input'
+import { Button } from './Button'
 
-// const app=>(         arrow function 
-//folders
-//button -> component , input -> componoent
+// const app=>(         arrow function       //done
+//folders                                     //done
+//button -> component , input -> componoent  //done
 //why choose vite & its problems
-// export const App = () => { 
-
-// }
 //use ref & use State اقرا عنهم 
+// اعمل A, B, C .....  (options)                        //done
 
 export const App = () => {
+  let [isShowResultActive, setIsShowResultActive] = React.useState(false)
+  let [isAddButtonClicked, setIsAddButtonClicked] = React.useState(false)
+  let [isSubmitNewClicked, setIsSubmitNewClicked] = React.useState(false)
   let [answers, setAnswers] = React.useState([])
   let questionsRef = React.useRef(null)
-  let resultRef = React.useRef(null)
   let addFormRef = React.useRef(null)
-  let blurDiv = React.useRef(null)
-  let cancelRef = React.useRef(null)
   let correctAnswers = answers.filter(obj => Object.values(obj)[0] == true).length
   let [isResultClicked, setIsResultClicked] = React.useState(false)
 
   let allQuestions = JSON.parse(localStorage.getItem('questions')) ? JSON.parse(localStorage.getItem('questions')) : questions
-  console.log(correctAnswers, allQuestions.length , allQuestions)
   
   function setQuestions(questions){
     localStorage.setItem('questions', JSON.stringify(questions))
@@ -38,6 +37,7 @@ export const App = () => {
               answer={x.answer}
               selectAnswer={updateAnswers}
               questionIndex={index}
+              isResultActive={isShowResultActive}
             />
   })
 
@@ -57,214 +57,85 @@ export const App = () => {
   }
   
   function showResult(){
-    //
-    resultRef.current.style.display ='block'
+    setIsShowResultActive(true)
     setIsResultClicked(true)
-    //button --> listner
-    questionsRef.current.querySelectorAll('button').forEach(button => {
-      button.disabled = true
-      button.style.cursor = 'not-allowed'
-      if(allQuestions.find((x,index) => x.answer == button.textContent && index == button.className) == undefined){
-        button.style.backgroundColor = 'rgb(236, 87, 87)'
-      }
-      else button.style.backgroundColor = 'rgb(25, 110, 25)'
-    })
   }
 
   function handleAdd(){
-    addFormRef.current.style.display = 'block'
-    blurDiv.current.style.display = 'block'
+    setIsAddButtonClicked(true)
   }
 
-  function handleSubmission(){
+  function handleSubmission(e){
+    e.preventDefault()
     const question = addFormRef.current.question.value
+    const answer0 = addFormRef.current.answer0.value
     const answer1 = addFormRef.current.answer1.value
     const answer2 = addFormRef.current.answer2.value
     const answer3 = addFormRef.current.answer3.value
-    const answer4 = addFormRef.current.answer4.value
     const correctAnswer = addFormRef.current.correctAnswer.value
+    console.log(question, answer0)
 
-    if(!question || !answer1 || !answer2 || !answer3 || !answer4 || !correctAnswer){
+    if(!question || !answer0 || !answer1 || !answer2 || !answer3 || !correctAnswer){
         alert('please fill all the required fields')
+        return
       }else{
         const newQuestion = {
           'question': question,
-          'options' : [answer1, answer2, answer3, answer4],
+          'options' : [`A- ${answer0}`, `B- ${answer1}`, `C- ${answer2}`, `D- ${answer3}`],
           'answer' : correctAnswer
         }
         allQuestions = [...allQuestions, newQuestion]
         setQuestions(allQuestions)
-        addFormRef.current.style.display = 'none'
-        blurDiv.current.style.display = 'none'
+        setIsSubmitNewClicked(true)
+        setIsAddButtonClicked(false)
       }
   }
 
   function handleCancel(){
-    addFormRef.current.style.display = 'none'
-    blurDiv.current.style.display = 'none'
+    setIsAddButtonClicked(false)
+    setIsSubmitNewClicked(false)
   }
+
+  const signs = ['A- ', 'B- ', 'C- ', 'D-']
+
+  let options = new Array(4).fill(0).map((x, index)=> 
+    <div key={`div-${index}`} className='option'>
+      {signs[index]}
+      <Input key={`input-${index}`} id="answers" name={`answer${index}`}/>
+    </div>
+  )
 
   return(
     <div>
       <header><h1 className='app-title'>Questions App</h1></header>
-      <button className='add-button' onClick={handleAdd}>+</button>
+      <Button class='add-button' value='+' onAdd={handleAdd}/>
       <div ref={questionsRef} className='questions'>
         {listOfQuestions}
       </div>
-      <button type='submit' onClick={showResult}>Click To See The Result</button>
-      <p ref={resultRef} style={{display: 'none'}}>You've got {correctAnswers}/{allQuestions.length}</p>
+      <Button class='show-result' value='Click To See The Result' onShowResult={showResult}/>
+      <p style={{display: isShowResultActive ? 'block' : 'none'}}>You've got {correctAnswers}/{allQuestions.length}</p>
       {correctAnswers == allQuestions.length && isResultClicked && 
       <><p>Congratulations!</p><Confetti style={{height: '340%', width: '100%'}}/></>}
-      <div className="blur" ref={blurDiv}></div>
-    <form className="add-form" method="get" ref={addFormRef}>
+      <div className="blur" style={{display: isAddButtonClicked ? (isSubmitNewClicked ? 'none' : 'block') : 'none'}}></div>
+    <form className="add-form" method="get" ref={addFormRef} style={{display: isAddButtonClicked ? (isSubmitNewClicked ? 'none' : 'block') : 'none'}}>
          <div className="label-input">
                 <label htmlFor="question">Question</label>
-                <input id="question" type="text" name="question" required />
+                <Input key={`input-${4}`} id="question" name="question"/>
         </div>
         <div className="label-input">
             <label htmlFor="answers">Answers</label>
-            <input id="answers" type="text" name="answer1" required />
-            <input id="answers" type="text" name="answer2" required />
-            <input id="answers" type="text" name="answer3" required />
-            <input id="answers" type="text" name="answer4" required />
+            {options}
         </div>
         <div className="label-input">
-            <label htmlFor="correct-answer">Correct Answer</label>
-            <input id="correct-answer" type="text" name="correctAnswer" required />
+            <label htmlFor="correct-answer">Correct Answer (A or B or C or D)</label>
+            <Input key={`input-${5}`} id="correct-answer" name="correctAnswer"/>
         </div>
         <div className="confirm-alert">
-            <button type="submit" className="submit-new-question" onClick={handleSubmission}>Add New Question</button>
-            <button type="submit" className="cancel" ref={cancelRef} onClick={handleCancel}>Cancel</button>
+          <Button class='submit-new-question' value='Add New Question' onSubmitNew={handleSubmission}/>
+          <Button class='cancel' value='Cancel' onCancel={handleCancel}/>
         </div>
     </form>
     </div>
   )
 
 }
-// export default function App() {
-//   let [answers, setAnswers] = React.useState([])
-//   let questionsRef = React.useRef(null)
-//   let resultRef = React.useRef(null)
-//   let addFormRef = React.useRef(null)
-//   let blurDiv = React.useRef(null)
-//   let cancelRef = React.useRef(null)
-//   let correctAnswers = answers.filter(obj => Object.values(obj)[0] == true).length
-//   let [isResultClicked, setIsResultClicked] = React.useState(false)
-
-//   let allQuestions = JSON.parse(localStorage.getItem('questions')) ? JSON.parse(localStorage.getItem('questions')) : questions
-//   console.log(correctAnswers, allQuestions.length , allQuestions)
-  
-//   function setQuestions(questions){
-//     localStorage.setItem('questions', JSON.stringify(questions))
-//   }
-
-//   const listOfQuestions = allQuestions.map((x, index) => {
-//     return <Question
-//               key={`question-${index}`}
-//               question={x.question}
-//               options={x.options}
-//               answer={x.answer}
-//               selectAnswer={updateAnswers}
-//               questionIndex={index}
-//             />
-//   })
-
-//   function updateAnswers(answer){
-//     //Object.keys(answer)[0] -> get an array which contains keys of the object
-//     //in this case -> answer has only one key and its value 
-//     //so the array length will be 1 --> this element is the key
-//     setAnswers(old => {
-//       //the newest version of array
-//       const questionIndex = old.findIndex((x) => Object.keys(x)[0] == Object.keys(answer)[0])
-//       if(questionIndex == -1) return [...old, answer] //if it's not exist
-//       else{
-//         //index = questionIndex => replace
-//         return old.map((x, index) => index == questionIndex ? answer : x)
-//       }
-//     })
-//   }
-  
-//   function showResult(){
-//     //
-//     resultRef.current.style.display ='block'
-//     setIsResultClicked(true)
-//     //button --> listner
-//     questionsRef.current.querySelectorAll('button').forEach(button => {
-//       button.disabled = true
-//       button.style.cursor = 'not-allowed'
-//       if(allQuestions.find((x,index) => x.answer == button.textContent && index == button.className) == undefined){
-//         button.style.backgroundColor = 'rgb(236, 87, 87)'
-//       }
-//       else button.style.backgroundColor = 'rgb(25, 110, 25)'
-//     })
-//   }
-
-//   function handleAdd(){
-//     addFormRef.current.style.display = 'block'
-//     blurDiv.current.style.display = 'block'
-//   }
-
-//   function handleSubmission(){
-//     const question = addFormRef.current.question.value
-//     const answer1 = addFormRef.current.answer1.value
-//     const answer2 = addFormRef.current.answer2.value
-//     const answer3 = addFormRef.current.answer3.value
-//     const answer4 = addFormRef.current.answer4.value
-//     const correctAnswer = addFormRef.current.correctAnswer.value
-
-//     if(!question || !answer1 || !answer2 || !answer3 || !answer4 || !correctAnswer){
-//         alert('please fill all the required fields')
-//       }else{
-//         const newQuestion = {
-//           'question': question,
-//           'options' : [answer1, answer2, answer3, answer4],
-//           'answer' : correctAnswer
-//         }
-//         allQuestions = [...allQuestions, newQuestion]
-//         setQuestions(allQuestions)
-//         addFormRef.current.style.display = 'none'
-//         blurDiv.current.style.display = 'none'
-//       }
-//   }
-
-//   function handleCancel(){
-//     addFormRef.current.style.display = 'none'
-//     blurDiv.current.style.display = 'none'
-//   }
-
-//   return(
-//     <div>
-//       <header><h1 className='app-title'>Questions App</h1></header>
-//       <button className='add-button' onClick={handleAdd}>+</button>
-//       <div ref={questionsRef} className='questions'>
-//         {listOfQuestions}
-//       </div>
-//       <button type='submit' onClick={showResult}>Click To See The Result</button>
-//       <p ref={resultRef} style={{display: 'none'}}>You've got {correctAnswers}/{allQuestions.length}</p>
-//       {correctAnswers == allQuestions.length && isResultClicked && 
-//       <><p>Congratulations!</p><Confetti style={{height: '340%', width: '100%'}}/></>}
-//       <div className="blur" ref={blurDiv}></div>
-//     <form className="add-form" method="get" ref={addFormRef}>
-//          <div className="label-input">
-//                 <label htmlFor="question">Question</label>
-//                 <input id="question" type="text" name="question" required />
-//         </div>
-//         <div className="label-input">
-//             <label htmlFor="answers">Answers</label>
-//             <input id="answers" type="text" name="answer1" required />
-//             <input id="answers" type="text" name="answer2" required />
-//             <input id="answers" type="text" name="answer3" required />
-//             <input id="answers" type="text" name="answer4" required />
-//         </div>
-//         <div className="label-input">
-//             <label htmlFor="correct-answer">Correct Answer</label>
-//             <input id="correct-answer" type="text" name="correctAnswer" required />
-//         </div>
-//         <div className="confirm-alert">
-//             <button type="submit" className="submit-new-question" onClick={handleSubmission}>Add New Question</button>
-//             <button type="submit" className="cancel" ref={cancelRef} onClick={handleCancel}>Cancel</button>
-//         </div>
-//     </form>
-//     </div>
-//   )
-// }

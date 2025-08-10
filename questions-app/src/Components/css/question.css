@@ -1,4 +1,5 @@
 .options{
     display: grid;
     gap: 1rem;
+    cursor: pointer;
 }
