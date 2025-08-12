@@ -1,17 +1,10 @@
-import './css/App.css'
+import '../css/App.css'
 import {Question} from './Question'
-import questions from '../questions.json'
+import questions from '../data/questions.json'
 import React from 'react'
 import Confetti from "react-confetti"
 import {Input} from './Input'
 import { Button } from './Button'
-
-// const app=>(         arrow function       //done
-//folders                                     //done
-//button -> component , input -> componoent  //done
-//why choose vite & its problems
-//use ref & use State اقرا عنهم 
-// اعمل A, B, C .....  (options)                        //done
 
 export const App = () => {
   let [isShowResultActive, setIsShowResultActive] = React.useState(false)
@@ -101,7 +94,7 @@ export const App = () => {
   let options = new Array(4).fill(0).map((x, index)=> 
     <div key={`div-${index}`} className='option'>
       {signs[index]}
-      <Input key={`input-${index}`} id="answers" name={`answer${index}`}/>
+      <Input key={`input-${index}`} id="answers" name={`answer${index}`} required={true}/>
     </div>
   )
 
@@ -120,7 +113,7 @@ export const App = () => {
     <form className="add-form" method="get" ref={addFormRef} style={{display: isAddButtonClicked ? (isSubmitNewClicked ? 'none' : 'block') : 'none'}}>
          <div className="label-input">
                 <label htmlFor="question">Question</label>
-                <Input key={`input-${4}`} id="question" name="question"/>
+                <Input key={`input-${4}`} id="question" name="question" required={true}/>
         </div>
         <div className="label-input">
             <label htmlFor="answers">Answers</label>
@@ -128,7 +121,7 @@ export const App = () => {
         </div>
         <div className="label-input">
             <label htmlFor="correct-answer">Correct Answer (A or B or C or D)</label>
-            <Input key={`input-${5}`} id="correct-answer" name="correctAnswer"/>
+            <Input key={`input-${5}`} id="correct-answer" name="correctAnswer" required={true}/>
         </div>
         <div className="confirm-alert">
           <Button class='submit-new-question' value='Add New Question' onSubmitNew={handleSubmission}/>

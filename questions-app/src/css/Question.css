@@ -1,0 +1,29 @@
+.options{
+    display: grid;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.correct-answer, .false-answer{
+    cursor: not-allowed;
+}
+
+.correct-answer{
+    background-color: rgb(25, 110, 25);
+}
+
+.false-answer{
+    background-color: rgb(236, 87, 87);
+}
+
+.selected, .not-selected{
+    cursor: pointer;
+}
+
+.selected{
+    background-color: #263581;
+}
+
+.not-selected{
+    background-color: #1a1a1a;
+}

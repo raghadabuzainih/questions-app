@@ -1,14 +1,9 @@
-import React from "react"
-
 export const Button = (props) => {
-    const buttonRef = React.useRef(null)
-
     let values = ['+', 'Click To See The Result', 'Add New Question', 'Cancel']
     //another values -> values of options(answers)
 
     return(
         <button
-            ref={buttonRef} 
             className={props.class}
             style={props.style}
             disabled={!values.includes(props.value) ? 

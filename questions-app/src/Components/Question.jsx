@@ -1,4 +1,4 @@
-import './css/Question.css'
+import '../css/Question.css'
 import React from 'react'
 import { Button } from './Button'
 
@@ -7,19 +7,16 @@ export const Question = (props) => {
     let options = props.options.map((option, index) => {
         return <Button 
                     key={`${props.questionIndex}-${index}`}
-                    class={`follow-q${props.questionIndex}`} 
-                    value={option.slice(3)}
-                    isResultActive={props.isResultActive}
                     //if is result button active(clicked) --> false & true answers will colored(red & green)
                     //else --> when the result is not shown -> only selected answer will color blue
                     
                     //i used option.slice(0,1) because options stored like (A-...), (B-...)
                     //and i want to take the first character & compare it with the correct answer
-                    style={{backgroundColor: props.isResultActive ? 
-                        (option.slice(0,1) == props.answer ? 'rgb(25, 110, 25)' : 'rgb(236, 87, 87)') : 
-                        index == selectedIndex ? '#263581' : '#1a1a1a',
-                        cursor:props.isResultActive ? 'not-allowed' : 'pointer'
-                    }}
+                    class={props.isResultActive ? 
+                        (option.slice(0,1) == props.answer ? 'correct-answer' : 'false-answer') : 
+                        index == selectedIndex ? 'selected' : 'not-selected'} 
+                    value={option.slice(3)}
+                    isResultActive={props.isResultActive}
                     clickAnswer={() => handleClick(index, option)}
                 >
                     {option}
@@ -27,7 +24,6 @@ export const Question = (props) => {
     })
 
     function handleClick(index, option){
-        console.log(index, option)
         setSelectedIndex(index)
         //get the sign like(A, B, ...)
         const selectedAnswer = option.slice(0, 1)
