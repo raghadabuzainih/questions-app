@@ -11,7 +11,6 @@ export const App = () => {
   let [isAddButtonClicked, setIsAddButtonClicked] = React.useState(false)
   let [isSubmitNewClicked, setIsSubmitNewClicked] = React.useState(false)
   let [answers, setAnswers] = React.useState([])
-  let questionsRef = React.useRef(null)
   let addFormRef = React.useRef(null)
   let correctAnswers = answers.filter(obj => Object.values(obj)[0] == true).length
   let [isResultClicked, setIsResultClicked] = React.useState(false)
@@ -102,7 +101,7 @@ export const App = () => {
     <div>
       <header><h1 className='app-title'>Questions App</h1></header>
       <Button class='add-button' value='+' onAdd={handleAdd}/>
-      <div ref={questionsRef} className='questions'>
+      <div className='questions'>
         {listOfQuestions}
       </div>
       <Button class='show-result' value='Click To See The Result' onShowResult={showResult}/>
